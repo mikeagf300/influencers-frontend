@@ -1,31 +1,49 @@
-// app/page.tsx
-import TweetCard from "../components/TweetCard"; // Asegúrate de tener este componente
+import InfluencerCard from "../components/InfluencerCard";
 
 export default function Home() {
-  const tweets = [
-    { username: "drjasonfung", content: "Eat more fiber!", verified: true },
-    { username: "another_influencer", content: "Drink water to stay healthy", verified: false },
-    // Añadir más tweets de ejemplo aquí
+  const influencers = [
+    {
+      name: "Dr. Jason Fung",
+      category: "Nutrición",
+      verified: true,
+      bio: "Experto en ayuno intermitente y salud metabólica.",
+    },
+    {
+      name: "Ana Wellness",
+      category: "Bienestar Mental",
+      verified: true,
+      bio: "Mindfulness y equilibrio emocional.",
+    },
+    {
+      name: "Carlos Fit",
+      category: "Fitness",
+      verified: false,
+      bio: "Rutinas de ejercicio para principiantes.",
+    },
   ];
 
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <h1 className="text-3xl font-bold mb-4">Verificación de Tweets</h1>
-        <p className="text-lg mb-8">A continuación se muestran algunos tweets verificados</p>
-        <div className="min-h-screen bg-blue-500 text-white flex items-center justify-center">
-      <h1 className="text-4xl text-blue-400">¡Tailwind está funcionando!</h1>
-    </div>
-        
-        <div className="space-y-4">
-          {tweets.map((tweet, index) => (
-            <TweetCard key={index} tweet={tweet} />
-          ))}
-        </div>
-      </main>
+    <div className="min-h-screen bg-gray text-gray-900 p-8 sm:p-20">
+      <header className="text-center mb-12">
+        <h1 className="text-4xl font-bold text-green-600">
+          Descubre Influencers de Salud y Bienestar
+        </h1>
+        <p className="text-lg mt-4 text-gray-700">
+          Encuentra expertos verificados que te ayudarán a mejorar tu estilo de
+          vida.
+        </p>
+      </header>
 
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        {/* Enlaces de footer si es necesario */}
+      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {influencers.map((influencer, index) => (
+          <InfluencerCard key={index} influencer={influencer} />
+        ))}
+      </section>
+
+      <footer className="text-center mt-16 text-gray-600">
+        <p>
+          © 2025 Influencers Salud & Bienestar. Todos los derechos reservados.
+        </p>
       </footer>
     </div>
   );

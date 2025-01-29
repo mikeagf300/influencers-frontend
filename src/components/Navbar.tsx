@@ -43,8 +43,13 @@ const Navbar = () => {
           </Link>
         </li>
         <li>
-          <Link href="/dashboard" className="text-lg hover:text-blue-400">
-            Sing Out
+          <Link href="/login" className="text-lg hover:text-blue-400">
+            Sing in
+          </Link>
+        </li>
+        <li>
+          <Link href="/register" className="text-lg hover:text-blue-400">
+            Register
           </Link>
         </li>
       </ul>
