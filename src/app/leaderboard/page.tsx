@@ -1,12 +1,59 @@
 "use client";
-import { useState } from "react";
+
+import axios from "axios";
+import { useState, useEffect } from "react";
+import { FaUsers, FaCheckCircle, FaChartLine } from "react-icons/fa";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent } from "@/components/ui/card";
-import { FaUsers, FaCheckCircle, FaChartLine } from "react-icons/fa";
+
+const API_KEY = "AIzaSyAusOxPbM2ej3rvZVpabGgXtP5zIu8AHCE"; // Reemplaza con tu clave de API de YouTube
+const searchQuery = "health fitness influencers";
+
+// Definir un tipo para el canal
+interface Channel {
+  channelId: string;
+  name: string;
+  description: string;
+  thumbnail: string;
+}
+
+async function fetchTopChannels(): Promise<Channel[]> {
+  const API_URL = `https://www.googleapis.com/youtube/v3/search`;
+
+  try {
+    const response = await axios.get(API_URL, {
+      params: {
+        part: "snippet",
+        q: searchQuery,
+        type: "channel",
+        key: API_KEY,
+        maxResults: 10, // Número de resultados que quieres obtener
+      },
+    });
+
+    // Asegurarse de que item tiene los tipos correctos
+    const channels = response.data.items.map((item: any) => ({
+      channelId: item.id.channelId,
+      name: item.snippet.title,
+      description: item.snippet.description,
+      thumbnail: item.snippet.thumbnails.default.url,
+    }));
+
+    return channels;
+  } catch (error) {
+    console.error("Error fetching top channels:", error);
+    return [];
+  }
+}
 
 export default function Leaderboard() {
+  const [channels, setChannels] = useState<Channel[]>([]);
   const [filter, setFilter] = useState("all");
   const [sortOrder, setSortOrder] = useState("highest");
+
+  useEffect(() => {
+    fetchTopChannels().then((fetchedChannels) => setChannels(fetchedChannels));
+  }, []);
 
   return (
     <div className="p-4 bg-gray-900 min-h-screen text-white">
@@ -76,17 +123,24 @@ export default function Leaderboard() {
           </tr>
         </thead>
         <tbody>
-          {/* Example row */}
-          <tr className="border-t border-gray-700">
-            <td className="p-4">1</td>
-            <td className="p-4">John Doe</td>
-            <td className="p-4">Nutrition</td>
-            <td className="p-4">95%</td>
-            <td className="p-4">Up</td>
-            <td className="p-4">1M</td>
-            <td className="p-4">120</td>
-          </tr>
-          {/* Add more rows as needed */}
+          {channels.map((channel, index) => (
+            <tr className="border-t border-gray-700" key={channel.channelId}>
+              <td className="p-4">{index + 1}</td>
+              <td className="p-4">
+                <img
+                  src={channel.thumbnail}
+                  alt={channel.name}
+                  className="w-12 h-12 rounded-full inline-block mr-2"
+                />
+                {channel.name}
+              </td>
+              <td className="p-4">Fitness</td>
+              <td className="p-4">98%</td>
+              <td className="p-4">Up</td>
+              <td className="p-4">1M</td>
+              <td className="p-4">120</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>

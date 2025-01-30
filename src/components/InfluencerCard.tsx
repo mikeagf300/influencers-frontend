@@ -1,21 +1,24 @@
 interface InfluencerCardProps {
   influencer: {
     name: string;
-
     category: string;
-
     verified: boolean;
-
     bio: string;
+    profileImage: string; // Agregar esta propiedad
   };
 }
 
 export default function InfluencerCard({
-  influencer: { name, category, verified, bio },
+  influencer: { name, category, verified, bio, profileImage },
 }: InfluencerCardProps) {
   return (
     <div className="bg-white shadow-lg rounded-2xl p-6 flex flex-col items-center text-center">
-      <div className="w-16 h-16 bg-gray-300 rounded-full mb-4"></div>
+      <img
+        src={profileImage}
+        alt={name}
+        className="w-16 h-16 rounded-full mb-4 object-cover"
+      />
+
       <h2 className="text-xl font-semibold">{name}</h2>
       <p className="text-sm text-gray-500">{category}</p>
       {verified && (

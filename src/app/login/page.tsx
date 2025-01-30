@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { useUser } from "../../contexts/UserContext";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
@@ -10,6 +11,7 @@ export default function LoginPage() {
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
   const router = useRouter();
+  const { setUser } = useUser();
 
   const handleLogin = async () => {
     try {
@@ -20,7 +22,13 @@ export default function LoginPage() {
         },
         body: JSON.stringify({ username, password }),
       });
+
       if (response.ok) {
+        const userData = await response.json();
+        // Guardar tanto el token como los datos del usuario en localStorage
+        localStorage.setItem("access_token", userData.access_token);
+        localStorage.setItem("user", JSON.stringify(userData.user)); // Guardar los datos del usuario
+        setUser(userData.user); // Establecer el usuario en el contexto
         setMessage("Login successful!");
         setIsError(false);
         setTimeout(() => {
